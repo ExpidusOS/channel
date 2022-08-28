@@ -27,5 +27,9 @@
         {
           libtokyo = libtokyo.packages.${system}.default;
         });
+
+        nixosModules.expidus = {
+          configuration = ./configuration.nix;
+        };
     };
 }

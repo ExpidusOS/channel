@@ -10,7 +10,7 @@
       nixos = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = attrs;
-        modules = [ ./configuration.nix ];
+        modules = [ expidus.configuration ./configuration.nix ];
       };
     in
     {
