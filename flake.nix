@@ -17,14 +17,7 @@
 
   outputs = { self, home-manager, nixpkgs, libtokyo, ... }@inputs:
     let
-      supportedSystems = [
-        "aarch64-linux"
-        "aarch64-darwin"
-        "i686-linux"
-        "riscv64-linux"
-        "x86_64-linux"
-        "x86_64-darwin"
-      ];
+      supportedSystems = builtins.attrNames libtokyo.packages;
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
     in {
@@ -39,16 +32,19 @@
       lib = {
         expidusSystem = { system }@expidus:
           let
+            ourPkgs = self.packages.${system.name};
             pkgs = nixpkgsFor.${system.name};
             lib = nixpkgs.lib;
             extendedLib = import ./modules/lib/stdlib-extended.nix lib;
           in lib.nixosSystem {
             system = system.name;
-            specialArgs = { inherit extendedLib; inherit expidus; };
-            modules = import ./modules/default.nix {
+            specialArgs = {
               inherit extendedLib;
               inherit expidus;
-              inherit lib;
+              inherit nixpkgs;
+            };
+            modules = import ./modules/default.nix {
+              inherit expidus;
             };
           };
       };

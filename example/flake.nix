@@ -11,6 +11,7 @@
           name = "x86_64-linux";
           builds = {
             docker = true;
+            virtual-machine = true;
           };
         };
       };
