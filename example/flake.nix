@@ -5,14 +5,18 @@
   inputs.nixpkgs.follows = "expidus/nixpkgs";
 
   outputs = { self, expidus, nixpkgs, home-manager }@attrs:
-    expidus.lib.expidusSystem {
-      name = "example";
-      system = {
-        name = "x86_64-linux";
-        builds = {
-          docker = true;
-          system = true;
+    let
+      system = expidus.lib.expidusSystem {
+        system = {
+          name = "x86_64-linux";
+          builds = {
+            docker = true;
+          };
         };
       };
+    in
+    {
+      nixosConfigurations.example = system;
+      packages.x86_64-linux.example-docker = system.config.system.build.tarball;
     };
 }

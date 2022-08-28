@@ -38,13 +38,13 @@
 
       lib = {
         expidus = (import ./modules/lib/stdlib-extended.nix nixpkgs.lib);
-        expidusSystem = { name, system ? { name = builtins.currentSystem; } }@expidus: (import ./modules {
+        expidusSystem = { system }@expidus: (import ./modules {
           pkgs = nixpkgsFor.${system};
           lib = nixpkgs.lib;
           config = {
             inherit expidus;
           };
-        });
+        }).nixosConfiguration;
       };
     };
 }
