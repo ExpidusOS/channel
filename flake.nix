@@ -5,10 +5,6 @@
   inputs.home-manager.url = github:nix-community/home-manager;
 
   outputs = { self, home-manager, nixpkgs, ... }: {
-    nixosModules = rec {
-      expidus = import ./module.nix;
-      default = expidus;
-    };
-    nixosModule = self.nixosModules.default;
+    nixosModule = import ./module.nix;
   };
 }
