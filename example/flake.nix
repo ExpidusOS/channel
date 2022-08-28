@@ -11,11 +11,19 @@
       nixos = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = attrs;
-        modules = [ home-manager.nixosModule expidus.nixosModule ./configuration.nix ];
+        modules = [
+          home-manager.nixosModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
+          expidus.nixosModules.expidus {}
+          ./configuration.nix
+        ];
       };
     in
     {
       nixosConfigurations.example = nixos;
       packages.x86_64-linux.default = nixos.config.system.build.tarball;
+      expidusConfig = expidus.lib.expidusConfiguration {};
     };
 }

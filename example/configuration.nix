@@ -3,9 +3,9 @@
   imports = [
     <nixpkgs/nixos/modules/virtualisation/docker-image.nix>
     <nixpkgs/nixos/modules/installer/cd-dvd/channel.nix>
-    <expidus>
   ];
 
+  system.stateVersion = "22.11";
   documentation.doc.enable = false;
 
   environment.systemPackages = with pkgs; [
