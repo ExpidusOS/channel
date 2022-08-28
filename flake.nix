@@ -42,18 +42,14 @@
             pkgs = nixpkgsFor.${system.name};
             lib = nixpkgs.lib;
             extendedLib = import ./modules/lib/stdlib-extended.nix lib;
-            config = { inherit expidus; };
-
-            args = {
-              inherit config;
-              inherit lib;
-              inherit pkgs;
-              inherit extendedLib;
-            };
           in lib.nixosSystem {
             system = system.name;
-            specialArgs = args;
-            modules = import ./modules/default.nix args;
+            specialArgs = { inherit extendedLib; inherit expidus; };
+            modules = import ./modules/default.nix {
+              inherit extendedLib;
+              inherit expidus;
+              inherit lib;
+            };
           };
       };
     };
