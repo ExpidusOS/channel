@@ -37,14 +37,24 @@
         });
 
       lib = {
-        expidus = (import ./modules/lib/stdlib-extended.nix nixpkgs.lib);
-        expidusSystem = { system }@expidus: (import ./modules {
-          pkgs = nixpkgsFor.${system};
-          lib = nixpkgs.lib;
-          config = {
-            inherit expidus;
+        expidusSystem = { system }@expidus:
+          let
+            pkgs = nixpkgsFor.${system.name};
+            lib = nixpkgs.lib;
+            extendedLib = import ./modules/lib/stdlib-extended.nix lib;
+            config = { inherit expidus; };
+
+            args = {
+              inherit config;
+              inherit lib;
+              inherit pkgs;
+              inherit extendedLib;
+            };
+          in lib.nixosSystem {
+            system = system.name;
+            specialArgs = args;
+            modules = import ./modules/default.nix args;
           };
-        }).nixosConfiguration;
       };
     };
 }
