@@ -10,7 +10,7 @@
       system = {
         name = "x86_64-linux";
         builds = {
-          tarball = true;
+          docker = true;
           system = true;
         };
       };
