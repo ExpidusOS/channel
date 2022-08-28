@@ -1,10 +1,19 @@
 {
   description = "The easy to use mobile and desktop operating system from Midstall Software";
 
-  inputs.nixpkgs.url = github:NixOS/nixpkgs;
-  inputs.home-manager.url = github:nix-community/home-manager;
   inputs.flake-utils.url = github:numtide/flake-utils;
-  inputs.libtokyo.url = github:ExpidusOS/libtokyo;
+  inputs.nixpkgs.url = github:NixOS/nixpkgs;
+
+  inputs.home-manager = {
+    url = github:nix-community/home-manager;
+    inputs.nixpkgs.follows = "nixpkgs";
+    inputs.utils.follows = "flake-utils";
+  };
+
+  inputs.libtokyo = {
+    url = github:ExpidusOS/libtokyo;
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   outputs = { self, home-manager, nixpkgs, libtokyo, ... }:
     let
@@ -18,8 +27,7 @@
       ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
-    in
-    {
+    in rec {
       packages = forAllSystems (system: 
         let
           pkgs = nixpkgsFor.${system};
@@ -28,8 +36,14 @@
           libtokyo = libtokyo.packages.${system}.default;
         });
 
-        nixosModules.expidus = {
-          configuration = ./configuration.nix;
-        };
+      lib = {
+        expidus = (import ./modules/lib/stdlib-extended.nix nixpkgs.lib).expidus;
+      };
+
+      nixosModules = rec {
+        expidus = import ./default.nix;
+        default = expidus;
+      };
+      nixosModule = nixosModules.default;
     };
 }
