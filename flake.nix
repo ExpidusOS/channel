@@ -41,7 +41,7 @@
       };
 
       nixosModules = rec {
-        expidus = import ./nixos;
+        expidus = import ./modules;
         default = expidus;
       };
       nixosModule = nixosModules.default;
