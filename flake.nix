@@ -27,7 +27,7 @@
       ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
-    in rec {
+    in {
       packages = forAllSystems (system: 
         let
           pkgs = nixpkgsFor.${system};
@@ -38,12 +38,13 @@
 
       lib = {
         expidus = (import ./modules/lib/stdlib-extended.nix nixpkgs.lib).expidus;
+        expidusSystem = { name, system ? { name = builtins.currentSystem; } }@args: (import ./modules {
+          pkgs = nixpkgsFor.${system};
+          lib = nixpkgs.lib;
+          config = {
+            expidus = args;
+          };
+        });
       };
-
-      nixosModules = rec {
-        expidus = import ./modules;
-        default = expidus;
-      };
-      nixosModule = nixosModules.default;
     };
 }
