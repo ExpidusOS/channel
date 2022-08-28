@@ -7,5 +7,12 @@
   outputs = { self, expidus, nixpkgs, home-manager }@attrs:
     expidus.lib.expidusSystem {
       name = "example";
+      system = {
+        name = "x86_64-linux";
+        builds = {
+          tarball = true;
+          system = true;
+        };
+      };
     };
 }

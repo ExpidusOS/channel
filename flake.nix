@@ -15,7 +15,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, home-manager, nixpkgs, libtokyo, ... }:
+  outputs = { self, home-manager, nixpkgs, libtokyo, ... }@inputs:
     let
       supportedSystems = [
         "aarch64-linux"
@@ -33,11 +33,11 @@
           pkgs = nixpkgsFor.${system};
         in
         {
-          libtokyo = libtokyo.packages.${system}.default;
+          libtokyo = inputs.libtokyo.packages.${system}.default;
         });
 
       lib = {
-        expidus = (import ./modules/lib/stdlib-extended.nix nixpkgs.lib).expidus;
+        expidus = (import ./modules/lib/stdlib-extended.nix nixpkgs.lib);
         expidusSystem = { name, system ? { name = builtins.currentSystem; } }@args: (import ./modules {
           pkgs = nixpkgsFor.${system};
           lib = nixpkgs.lib;
