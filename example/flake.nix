@@ -3,11 +3,18 @@
 
   inputs.expidus.url = "path:../";
 
-  outputs = { self, expidus, nixpkgs }@attrs: {
-    nixosConfigurations.example = nixpkgs.lib.nixosSystem {
+  outputs = { self, expidus, nixpkgs }@attrs:
+    let
       system = "x86_64-linux";
-      specialArgs = attrs;
-      modules = [];
+      pkgs = import nixpkgs { inherit system; };
+      nixos = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = attrs;
+        modules = [ ./configuration.nix ];
+      };
+    in
+    {
+      nixosConfigurations.example = nixos;
+      packages.x86_64-linux.default = nixos.config.system.build.tarball;
     };
-  };
 }
