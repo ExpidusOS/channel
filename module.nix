@@ -1,3 +1,3 @@
-{ config, lib, nixpkgs, home-manager, expidus, self, specialArgs, options }: {
+{ config, lib, nixpkgs, home-manager, expidus, ... }: {
   imports = [ home-manager.nixosModule ];
 }
