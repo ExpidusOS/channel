@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1659877975,
+        "narHash": "sha256-zllb8aq3YO3h8B/U0/J1WBgAL8EX5yWf5pMj3G0NAmc=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "c0e246b9b83f637f4681389ecabcb2681b4f3af0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": "nixpkgs",
@@ -16,6 +31,24 @@
       "original": {
         "owner": "nix-community",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "libtokyo": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1661639806,
+        "narHash": "sha256-7I/+A60n5WdjD3KrOR1quKM/cNJQ4QSNFNuNdwflbYk=",
+        "owner": "ExpidusOS",
+        "repo": "libtokyo",
+        "rev": "decff5e0e90a49881e809922e33ff0b13a77fdb6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ExpidusOS",
+        "repo": "libtokyo",
         "type": "github"
       }
     },
@@ -37,6 +70,20 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1661353537,
+        "narHash": "sha256-1E2IGPajOsrkR49mM5h55OtYnU0dGyre6gl60NXKITE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "0e304ff0d9db453a4b230e9386418fd974d5804a",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1661641486,
         "narHash": "sha256-+wdlXaGJeO2PrFrOwVIyP+LmGD1iavGbMJ7Qy+S8SzM=",
         "owner": "NixOS",
@@ -52,8 +99,10 @@
     },
     "root": {
       "inputs": {
+        "flake-utils": "flake-utils",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs_2"
+        "libtokyo": "libtokyo",
+        "nixpkgs": "nixpkgs_3"
       }
     },
     "utils": {
