@@ -6,18 +6,15 @@
 
   outputs = { self, expidus, nixpkgs, home-manager }@attrs:
     let
-      system = expidus.lib.expidusSystem {
+      systems = expidus.lib.expidusSystem {
+        name = "example";
         system = {
           name = "x86_64-linux";
-          builds = {
-            docker = true;
-            virtual-machine = true;
-          };
+          builds = ["virtual-machine"];
         };
       };
     in
     {
-      nixosConfigurations.example = system;
-      packages.x86_64-linux.example-docker = system.config.system.build.tarball;
+      nixosConfigurations.example = systems.virtual-machine;
     };
 }

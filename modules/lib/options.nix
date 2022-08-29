@@ -4,7 +4,15 @@ let
   cfg = config.expidus;
 in
 {
+  # Option template
   options.expidus = {
+    name = mkOption {
+      type = types.string;
+      default = "expidus";
+      description = ''
+        Sets the hostname of the system.
+      '';
+    };
     system = {
       name = mkOption {
         type = types.string;
@@ -13,25 +21,23 @@ in
           The system target name to use.
         '';
 
-        builds = {
-          docker = mkOption {
-            type = types.bool;
-            default = false;
-            description = ''
-              Enable to add Docker output
-            '';
-          };
-          virtual-machine = mkOption {
-            type = types.bool;
-            default = false;
-            description = ''
-              Enable to add VM output
-            '';
-          };
+        builds = mkOption {
+          type = types.enum [ "docker" "virtual-machine" "standard" ];
+          default = [];
+          description = ''
+            The system build types to output.
+          '';
         };
       };
     };
   };
 
-  config.expidus = expidus;
+  # Default options
+  config.expidus = {
+    name = "expidus";
+    system = {
+      name = builtins.currentSystem;
+      builds = [ "standard" ];
+    };
+  } // expidus;
 }
