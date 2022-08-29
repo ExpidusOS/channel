@@ -36,6 +36,23 @@ let
     PRETTY_NAME = "${osReleaseContents.PRETTY_NAME} (Initrd)";
   };
   initrdRelease = pkgs.writeText "initrd-release" (attrsToText initrdReleaseContents);
+
+  makeProg = args: pkgs.substituteAll (args // {
+    dir = "bin";
+    isExecutable = true;
+  });
+
+  expidus-version = makeProg {
+    name = "expidus-version";
+    src = ./expidus-version.sh;
+    inherit (pkgs) runtimeShell;
+    inherit (extendedLib.trivial) version codeName release revision;
+    json = builtins.toJSON ({
+      expidusVersion = trivial.version;
+    } // optionalAttrs (trivial.revision != "unknown") {
+      expidusRevision = trivial.revision;
+    });
+  };
 in
 {
   config = {
@@ -49,5 +66,7 @@ in
       });
       "os-release".text = mkForce (attrsToText osReleaseContents);
     };
+
+    environment.systemPackages = [ expidus-version ];
   };
 }

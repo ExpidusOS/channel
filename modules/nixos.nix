@@ -1165,7 +1165,6 @@ let
     (nixpkgs + "/nixos/modules/services/x11/xfs.nix")
     (nixpkgs + "/nixos/modules/services/x11/xserver.nix")
     (nixpkgs + "/nixos/modules/system/activation/activation-script.nix")
-    (nixpkgs + "/nixos/modules/system/activation/top-level.nix")
     (nixpkgs + "/nixos/modules/system/boot/binfmt.nix")
     (nixpkgs + "/nixos/modules/system/boot/emergency-mode.nix")
     (nixpkgs + "/nixos/modules/system/boot/grow-partition.nix")

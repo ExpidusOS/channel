@@ -9,16 +9,18 @@ rec {
   versionSuffix =
     let suffixFile = ../../.version-suffix;
     in if pathExists suffixFile
-    then lib.strings.fileContents suffixFile
-    else "-pre-git";
+    then "-${lib.strings.fileContents suffixFile}"
+    else "";
 
-  revisionTag = let
+  revision = let
     revisionFile = "${toString ./../..}/.git-revision";
     gitRepo = "${toString ./../..}/.git";
   in if lib.pathIsGitRepo gitRepo
-    then "-${lib.commitIdFromGitRepo gitRepo}"
-    else if lib.pathExists revisionFile then "-${lib.fileContents revisionFile}"
-    else "";
+    then lib.commitIdFromGitRepo gitRepo
+    else if lib.pathExists revisionFile then lib.fileContents revisionFile
+    else "unknown";
+
+  revisionTag = if revision != "unknown" then "-${revisionTag}" else "";
 
   version = release + versionSuffix + revisionTag;
   codeName = "Willamette";

@@ -7,7 +7,6 @@
   outputs = { self, expidus, nixpkgs, home-manager }@attrs:
     let
       systems = expidus.lib.expidusSystem {
-        name = "example";
         system = {
           name = "x86_64-linux";
           builds = ["virtual-machine"];
