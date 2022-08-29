@@ -41,7 +41,7 @@
                 inherit extendedLib expidus nixpkgs target;
               };
               baseModules = import ./modules/nixos.nix {
-                inherit nixpkgs;
+                inherit nixpkgs expidus;
               };
               modules = import ./modules/default.nix {
                 inherit extendedLib expidus lib target;

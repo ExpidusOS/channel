@@ -1,4 +1,4 @@
-{ nixpkgs }:
+{ nixpkgs, expidus, ... }:
 let
   modules = [
     # Generated with the following command:

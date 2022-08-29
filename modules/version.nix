@@ -1,4 +1,5 @@
 { config, expidus, nixpkgs, extendedLib, lib, pkgs, target, ... }:
+with lib;
 let
   config = extendedLib.makeOptions { inherit expidus config; };
   cfg = config.expidus;
@@ -22,7 +23,7 @@ let
     VERSION = "${trivial.release} (${trivial.codeName})";
     VERSION_CODENAME = toLower trivial.codeName;
     VERSION_ID = trivial.release;
-    BUILD_ID = trivial.revisionWithDefault trivial.release;
+    BUILD_ID = "${trivial.version}-${target}";
     PRETTY_NAME = "ExpidusOS ${trivial.codeName} ${trivial.release}";
     HOME_URL = "https://expidusos.com";
     DOCUMENTATION_URL = "https://expidusos.com";
