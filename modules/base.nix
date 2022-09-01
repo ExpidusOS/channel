@@ -1,4 +1,4 @@
-{ config, nixpkgs, lib, ... }:
+{ config, expidus, nixpkgs, lib, extendedLib, ... }:
 with lib;
 let
   cfg = config.expidus;
@@ -29,6 +29,6 @@ in
     '');
     documentation.nixos.options.warningsAreErrors = false;
     documentation.enable = false;
-    expidus.name = if builtins.hasAttr "name" config then config.name else "expidus";
+    inherit expidus;
   };
 }

@@ -1,4 +1,4 @@
-{ config, expidus, nixpkgs, lib, pkgs, target, ... }:
+{ config, expidus, nixpkgs, extendedLib, lib, pkgs, target, ... }:
 with lib;
 let
   cfg = config.expidus;

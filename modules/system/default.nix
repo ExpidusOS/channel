@@ -20,9 +20,16 @@ in
           options = {
             enable = mkOption {
               default = false;
-              type = types.bool;
+              type = with types; bool;
               description = ''
                 Enable to build a "${name}" variant
+              '';
+            };
+
+            name = mkOption {
+              type = with types; str;
+              description = ''
+                Name of the build variant
               '';
             };
           };
@@ -34,19 +41,12 @@ in
       ]);
       default = {
         standard = {
-          enabled = true;
+          enable = true;
         };
       };
       description = "Configuration for build outputs.";
     };
   };
 
-  config.expidus.system = {
-    name = builtins.currentSystem;
-    builds = {
-      standard = {
-        enabled = true;
-      };
-    };
-  } // expidus.system // cfg;
+  config.expidus.system = expidus.system;
 }
