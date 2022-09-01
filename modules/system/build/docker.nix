@@ -1,6 +1,5 @@
-{ config, expidus, nixpkgs, extendedLib, ... }:
+{ config, nixpkgs, extendedLib, ... }:
 let
-  config = extendedLib.makeOptions { inherit expidus config; };
   cfg = config.expidus;
 in
 {

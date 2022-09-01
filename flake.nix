@@ -29,24 +29,30 @@
         });
 
       lib = {
-        expidusSystem = { name ? null, system ? {} }@expidus:
+        expidusSystem = { name ? "expidus", system ? {}, modules ? [] }@expidus:
           let
             ourPkgs = self.packages.${system.name};
             pkgs = nixpkgsFor.${system.name};
             lib = nixpkgs.lib;
             extendedLib = (import ./modules/lib/stdlib-extended.nix lib).ex;
-          in lib.genAttrs system.builds (target: lib.nixosSystem {
+          in rec {
+            systems = builtins.mapAttrs (target: config: lib.nixosSystem {
               system = system.name;
               specialArgs = {
-                inherit extendedLib expidus nixpkgs target;
+                inherit extendedLib nixpkgs target expidus;
               };
               baseModules = import ./modules/nixos.nix {
                 inherit nixpkgs expidus;
               };
-              modules = import ./modules/default.nix {
-                inherit extendedLib expidus lib target;
-              };
-            });
+              modules = (import ./modules/default.nix {
+                inherit extendedLib lib target expidus;
+              }) ++ modules;
+            }) system.builds;
+
+            nixosConfigurations.${name + "-vm"} = if builtins.hasAttr "virtual-machine" systems then systems.virtual-machine else null;
+            nixosConfigurations.${name} = if builtins.hasAttr "standard" systems then systems.standard else null;
+            packages.${system.name}.${name + "-docker"} = if builtins.hasAttr "docker" systems then systems.docker.config.system.build.tarball else null;
+          };
       };
     };
 }
