@@ -18,6 +18,9 @@
           docker = {
             enable = true;
           };
+          flatpak = {
+            enable = true;
+          };
         };
       };
     };

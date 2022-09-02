@@ -15,7 +15,7 @@ in
       type = with types; attrsOf (submodule [
         ({ config, name, ... }:
         let
-          validNames = [ "docker" "virtual-machine" "standard" ];
+          validNames = [ "docker" "virtual-machine" "standard" "flatpak" ];
         in {
           options = {
             enable = mkOption {

@@ -51,7 +51,10 @@
 
             nixosConfigurations.${name + "-vm"} = if builtins.hasAttr "virtual-machine" systems then systems.virtual-machine else null;
             nixosConfigurations.${name} = if builtins.hasAttr "standard" systems then systems.standard else null;
-            packages.${system.name}.${name + "-docker"} = if builtins.hasAttr "docker" systems then systems.docker.config.system.build.tarball else null;
+            packages.${system.name} = {
+              ${name + "-docker"} = if builtins.hasAttr "docker" systems then systems.docker.config.system.build.tarball else null;
+              ${name + "-flatpak"} = if builtins.hasAttr "flatpak" systems then systems.flatpak.config.system.build.flatpak else null;
+            };
           };
       };
     };

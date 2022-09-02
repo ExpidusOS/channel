@@ -11,5 +11,6 @@ let
     ./version.nix
   ]
     ++ optional (target == "docker") ./system/build/docker.nix
+    ++ optional (target == "flatpak") ./system/build/flatpak.nix
     ++ optional (target == "virtual-machine") ./system/build/virtual-machine.nix;
 in modules
