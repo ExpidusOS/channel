@@ -3,6 +3,12 @@ let
   cfg = config.expidus;
 in
 {
+  imports = [
+    (nixpkgs + "/nixos/modules/installer/cd-dvd/channel.nix")
+    (nixpkgs + "/nixos/modules/profiles/minimal.nix")
+    (nixpkgs + "/nixos/modules/profiles/clone-config.nix")
+  ];
+
   system.build.flatpak = pkgs.stdenv.mkDerivation {
     name = "flatpak";
   };
