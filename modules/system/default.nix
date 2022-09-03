@@ -1,7 +1,34 @@
-{ config, expidus, lib, target, ... }:
+{ config, expidus, lib, target, options, ... }:
 with lib;
 let
   cfg = config.expidus.system;
+
+  usersType = with types; attrsOf (submodule [
+    ({ config, name, ... }:
+    let
+      nix = builtins.map (mod: builtins.map (val: val {
+        inherit name;
+        config = config.nix;
+      }) mod.imports) options.users.users.type.getSubModules;
+    in
+      {
+      options = {
+        name = mkOption {
+          type = with types; str;
+          description = ''
+            Name of the user.
+          '';
+        };
+
+        nix = nix.options;
+      };
+
+      config = {
+        inherit name;
+        nix = nix.config;
+      };
+    })
+  ]);
 in
 {
   options.expidus.system = {
@@ -17,6 +44,14 @@ in
       example = literalExpression "[ pkgs.firefox pkgs.thunderbird ]";
       description = ''
         Packages to install for all system builds.
+      '';
+    };
+
+    users = mkOption {
+      type = usersType;
+      default = {};
+      description = ''
+        Users to add for all system builds.
       '';
     };
 
@@ -66,6 +101,14 @@ in
               '';
             };
 
+            users = mkOption {
+              type = usersType;
+              default = {};
+              description = ''
+                Users to add for this particular system.
+              '';
+            };
+
             inherit extraOptions;
           };
 
@@ -86,4 +129,8 @@ in
   config.expidus.system = expidus.system;
 
   config.environment.systemPackages = cfg.packages ++ cfg.builds.${target}.packages;
+  config.users.users =
+    let
+      userDefs = cfg.users // cfg.builds.${target}.users;
+    in builtins.mapAttrs (user: user.nix) userDefs;
 }
