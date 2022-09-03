@@ -7,14 +7,13 @@ let
     ({ config, name, ... }:
     let
       hmType = with types; attrsOf (submoduleWith {
-        description = "Home Manager module";
         specialArgs = {
           lib = import (home-manager + "/modules/lib/stdlib-extended.nix") pkgs.lib;
           osConfig = config;
           modulesPath = builtins.toString home-manager;
         };
         modules = [
-          ({ name, ... }: {
+          ({ config, name, ... }: {
             imports = import (home-manager + "/modules/modules.nix") {
               inherit pkgs;
               lib = import (home-manager + "/modules/lib/stdlib-extended.nix") pkgs.lib;
@@ -33,18 +32,7 @@ let
           })
         ];
       });
-
-      nix = builtins.map (mod: builtins.map (val: val {
-        inherit name;
-        config = config.nix;
-      }) mod.imports) options.users.users.type.getSubModules;
-
-      home-manager = builtins.map (mod: builtins.map (val: val {
-        inherit name;
-        config = config.home-manager;
-      }) mod.inputs) hmType.getSubModules; 
-    in
-      {
+    in {
       options = {
         name = mkOption {
           type = with types; str;
@@ -53,14 +41,12 @@ let
           '';
         };
 
-        nix = nix.options;
-        home-manager = home-manager.options;
+        nix = options.users.users.type.getSubOptions [];
+        home-manager = hmType.getSubOptions [];
       };
 
       config = {
         inherit name;
-        nix = nix.config;
-        home-manager = home-manager.config;
       };
     })
   ]);
@@ -167,7 +153,7 @@ in
   config.users.users =
     let
       userDefs = cfg.users // cfg.builds.${target}.users;
-    in builtins.mapAttrs (user: user.nix) userDefs;
+    in builtins.mapAttrs (name: user: user.nix) userDefs;
 
   imports = [
     home-manager.nixosModules.home-manager {
@@ -176,7 +162,7 @@ in
       home-manager.users =
         let
           userDefs = cfg.users // cfg.builds.${target}.users;
-        in builtins.mapAttrs (user: user.home-manager) userDefs;
+        in builtins.mapAttrs (name: user: user.home-manager) userDefs;
     }
   ];
 }

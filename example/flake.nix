@@ -9,6 +9,13 @@
     expidus.lib.expidusSystem {
       system = {
         name = "x86_64-linux";
+
+        users = {
+          demo = {
+            nix.initialPassword = "demo";
+          };
+        };
+
         builds = {
           virtual-machine = {
             enable = true;
