@@ -39,13 +39,13 @@
             systems = builtins.mapAttrs (target: config: lib.nixosSystem {
               system = system.name;
               specialArgs = {
-                inherit extendedLib nixpkgs target expidus;
+                inherit extendedLib nixpkgs target expidus home-manager;
               };
               baseModules = import ./modules/nixos.nix {
-                inherit nixpkgs expidus;
+                inherit nixpkgs expidus home-manager;
               };
               modules = (import ./modules/default.nix {
-                inherit extendedLib lib target;
+                inherit extendedLib lib target home-manager;
               }) ++ modules;
             }) system.builds;
 

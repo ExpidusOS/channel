@@ -1,4 +1,4 @@
-{ config, expidus, lib, target, options, ... }:
+{ config, expidus, lib, target, options, pkgs, home-manager, ... }:
 with lib;
 let
   cfg = config.expidus.system;
@@ -6,10 +6,43 @@ let
   usersType = with types; attrsOf (submodule [
     ({ config, name, ... }:
     let
+      hmType = with types; attrsOf (submoduleWith {
+        description = "Home Manager module";
+        specialArgs = {
+          lib = import (home-manager + "/modules/lib/stdlib-extended.nix") pkgs.lib;
+          osConfig = config;
+          modulesPath = builtins.toString home-manager;
+        };
+        modules = [
+          ({ name, ... }: {
+            imports = import (home-manager + "/modules/modules.nix") {
+              inherit pkgs;
+              lib = import (home-manager + "/modules/lib/stdlib-extended.nix") pkgs.lib;
+              useNixpkgsModule = true;
+            };
+
+            config = {
+              submoduleSupport.enable = true;
+              submoduleSupport.externalPackageInstall = true;
+
+              home.username = config.users.users.${name}.name;
+              home.homeDirectory = config.users.users.${name}.home;
+
+              home.extraActivationPath = [ config.nix.package ];
+            };
+          })
+        ];
+      });
+
       nix = builtins.map (mod: builtins.map (val: val {
         inherit name;
         config = config.nix;
       }) mod.imports) options.users.users.type.getSubModules;
+
+      home-manager = builtins.map (mod: builtins.map (val: val {
+        inherit name;
+        config = config.home-manager;
+      }) mod.inputs) hmType.getSubModules; 
     in
       {
       options = {
@@ -21,11 +54,13 @@ let
         };
 
         nix = nix.options;
+        home-manager = home-manager.options;
       };
 
       config = {
         inherit name;
         nix = nix.config;
+        home-manager = home-manager.config;
       };
     })
   ]);
@@ -133,4 +168,15 @@ in
     let
       userDefs = cfg.users // cfg.builds.${target}.users;
     in builtins.mapAttrs (user: user.nix) userDefs;
+
+  imports = [
+    home-manager.nixosModules.home-manager {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.users =
+        let
+          userDefs = cfg.users // cfg.builds.${target}.users;
+        in builtins.mapAttrs (user: user.home-manager) userDefs;
+    }
+  ];
 }
