@@ -35,6 +35,8 @@ in
               };
             };
           };
+
+          extraOptions = specialOptions.${name};
         in {
           options = {
             enable = mkOption {
@@ -51,7 +53,7 @@ in
                 Name of the build variant
               '';
             };
-          } // specialOptions.${name};
+          } // extraOptions;
 
           config = mkIf config.enable {
             name = if builtins.elem name validNames then name else (throw "Invalid build name: ${name}");

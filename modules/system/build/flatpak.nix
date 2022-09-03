@@ -30,12 +30,12 @@ in
     builder = ./flatpak.sh;
     nativeBuildInputs = with pkgs; [ ostree ];
 
-    branch = "${cfg.type}/${cfg.id}/${(builtins.split "-" config.expidus.system.name)[0]}";
+    branch = "${cfg.type}/${cfg.id}/${(builtins.head (builtins.split "-" config.expidus.system.name))}";
 
     sources = map (x: x.source) contents;
     targets = map (x: x.target) contents;
 
-    closureInfo = closureInfo {
+    closureInfo = pkgs.closureInfo {
       rootPaths = objects;
     };
 
