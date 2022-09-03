@@ -57,6 +57,8 @@ in
 
           config = mkIf config.enable {
             name = if builtins.elem name validNames then name else (throw "Invalid build name: ${name}");
+            id = config.id;
+            type = config.type;
           };
         })
       ]);

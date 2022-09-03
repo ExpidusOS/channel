@@ -5,6 +5,7 @@ targets_=($targets)
 
 objects=($objects)
 symlinks=($symlinks)
+branch="$type/$id/$system"
 
 # Remove the initial slash from a path, since genisofs likes it that way.
 stripSlash() {
