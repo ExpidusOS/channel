@@ -2,6 +2,7 @@
   description = "Example ExpidusOS configuration";
 
   inputs.expidus.url = "path:../";
+  inputs.home-manager.follows = "expidus/home-manager";
   inputs.nixpkgs.follows = "expidus/nixpkgs";
 
   outputs = { self, expidus, nixpkgs, home-manager }@attrs:

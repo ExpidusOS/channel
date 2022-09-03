@@ -23,7 +23,7 @@ in
             standard = {};
             flatpak = {
               branch = mkOption {
-                default = "runtime/com.expidus.Runtime/${builtins.head (builtins.split "-" builtins.currentSystem)}";
+                default = "runtime/com.expidus.Runtime/${builtins.head (builtins.split "-" cfg.name)}/stable";
                 type = with types; str;
                 description = "The Flatpak package identifier to use";
               };
@@ -47,11 +47,12 @@ in
                 Name of the build variant
               '';
             };
-          } // extraOptions;
+
+            inherit extraOptions;
+          };
 
           config = mkIf config.enable {
             name = if builtins.elem name validNames then name else (throw "Invalid build name: ${name}");
-            branch = config.branch;
           };
         })
       ]);

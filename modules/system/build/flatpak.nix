@@ -1,6 +1,6 @@
 { config, nixpkgs, extendedLib, pkgs, ... }:
 let
-  cfg = config.expidus.system.builds.flatpak;
+  cfg = config.expidus.system.builds.flatpak.extraOptions;
   pkgs2storeContents = l : map (x: { object = x; symlink = "none"; }) l;
   inherit (pkgs) writeScript;
 in
@@ -32,7 +32,7 @@ in
           '';
         in script;
 
-      branch = cfg.branch;
+      inherit (cfg) branch;
     };
 
     boot.isContainer = true;
