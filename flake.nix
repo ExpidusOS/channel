@@ -16,7 +16,7 @@
 
   outputs = { self, home-manager, nixpkgs, libtokyo, ... }@inputs:
     let
-      supportedSystems = builtins.attrNames libtokyo.packages;
+      supportedSystems = builtins.filter (name: builtins.head (builtins.tail (builtins.tail (builtins.split "-" name))) == "linux") (builtins.attrNames libtokyo.packages);
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
     in {
@@ -26,6 +26,8 @@
         in
         {
           libtokyo = inputs.libtokyo.packages.${system}.default;
+          libtokyo-gtk3 = inputs.libtokyo.packages.${system}.gtk3;
+          libtokyo-gtk4 = inputs.libtokyo.packages.${system}.gtk4;
         });
 
       lib = {

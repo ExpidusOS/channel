@@ -17,7 +17,7 @@ let
             imports = import (home-manager + "/modules/modules.nix") {
               inherit pkgs;
               lib = import (home-manager + "/modules/lib/stdlib-extended.nix") pkgs.lib;
-              useNixpkgsModule = true;
+              useNixpkgsModule = false;
             };
 
             config = {
