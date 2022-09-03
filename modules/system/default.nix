@@ -1,4 +1,4 @@
-{ config, expidus, lib, ... }:
+{ config, expidus, lib, target, ... }:
 with lib;
 let
   cfg = config.expidus.system;
@@ -9,6 +9,15 @@ in
       type = with types; str;
       default = builtins.currentSystem;
       description = "Set the target system";
+    };
+
+    packages = mkOption {
+      type = with types; listOf package;
+      default = [];
+      example = literalExpression "[ pkgs.firefox pkgs.thunderbird ]";
+      description = ''
+        Packages to install for all system builds.
+      '';
     };
 
     builds = mkOption {
@@ -48,6 +57,15 @@ in
               '';
             };
 
+            packages = mkOption {
+              type = with types; listOf package;
+              default = [];
+              example = literalExpression "[ pkgs.firefox pkgs.thunderbird ]";
+              description = ''
+                Packages to install for this particular system.
+              '';
+            };
+
             inherit extraOptions;
           };
 
@@ -66,4 +84,6 @@ in
   };
 
   config.expidus.system = expidus.system;
+
+  config.environment.systemPackages = cfg.packages ++ cfg.builds.${target}.packages;
 }
