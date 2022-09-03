@@ -1,6 +1,22 @@
 { config, nixpkgs, extendedLib, pkgs, ... }:
 let
-  cfg = config.expidus;
+  cfg = config.expidus.system.builds.flatpak;
+  pkgs2storeContents = l : map (x: { object = x; symlink = "none"; }) l;
+
+  contents = [
+    {
+      source = "${config.system.build.toplevel}/.";
+      target = "./";
+    }
+  ];
+
+  storeContents = pkgs2storeContents [
+    config.system.build.toplevel
+    pkgs.stdenv
+  ];
+
+  symlinks = map (x: x.symlink) storeContents;
+  objects = map (x: x.object) storeContents;
 in
 {
   imports = [
@@ -11,6 +27,19 @@ in
 
   system.build.flatpak = pkgs.stdenv.mkDerivation {
     name = "flatpak";
+    builder = ./flatpak.sh;
+    nativeBuildInputs = with pkgs; [ ostree ];
+
+    branch = "${cfg.type}/${cfg.id}/${(builtins.split "-" config.expidus.system.name)[0]}";
+
+    sources = map (x: x.source) contents;
+    targets = map (x: x.target) contents;
+
+    closureInfo = closureInfo {
+      rootPaths = objects;
+    };
+
+    inherit symlinks objects;
   };
 
   boot.isContainer = true;

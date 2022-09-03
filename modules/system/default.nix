@@ -16,6 +16,25 @@ in
         ({ config, name, ... }:
         let
           validNames = [ "docker" "virtual-machine" "standard" "flatpak" ];
+
+          specialOptions = {
+            docker = {};
+            virtual-machine = {};
+            standard = {};
+            flatpak = {
+              id = mkOption {
+                default = "com.expidus.Runtime";
+                type = with types; str;
+                description = "Package ID to use";
+              };
+
+              type = mkOption {
+                default = "runtime";
+                type = with types; str;
+                description = "Specifies what kind of package this is.";
+              };
+            };
+          };
         in {
           options = {
             enable = mkOption {
@@ -32,7 +51,7 @@ in
                 Name of the build variant
               '';
             };
-          };
+          } // specialOptions.${name};
 
           config = mkIf config.enable {
             name = if builtins.elem name validNames then name else (throw "Invalid build name: ${name}");
