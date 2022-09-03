@@ -32,8 +32,7 @@ in
           '';
         in script;
 
-      type = cfg.type;
-      id = cfg.id;
+      branch = cfg.branch;
     };
 
     boot.isContainer = true;

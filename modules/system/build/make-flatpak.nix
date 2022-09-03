@@ -1,4 +1,4 @@
-{ config, stdenv, closureInfo, pkgs, contents, extraCommands, storeContents, type, id }:
+{ config, stdenv, closureInfo, pkgs, contents, extraCommands, storeContents, branch }:
 let
   symlinks = map (x: x.symlink) storeContents;
   objects = map (x: x.object) storeContents;
@@ -13,9 +13,9 @@ stdenv.mkDerivation {
   sources = map (x: x.source) contents;
   targets = map (x: x.target) contents;
 
-  closureInfo = pkgs.closureInfo {
+  closureInfo = closureInfo {
     rootPaths = objects;
   };
 
-  inherit symlinks objects extraCommands type id;
+  inherit symlinks objects extraCommands branch;
 }

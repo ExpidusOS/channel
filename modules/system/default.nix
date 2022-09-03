@@ -22,16 +22,10 @@ in
             virtual-machine = {};
             standard = {};
             flatpak = {
-              id = mkOption {
-                default = "com.expidus.Runtime";
+              branch = mkOption {
+                default = "runtime/com.expidus.Runtime/${builtins.head (builtins.split "-" builtins.currentSystem)}";
                 type = with types; str;
-                description = "Package ID to use";
-              };
-
-              type = mkOption {
-                default = "runtime";
-                type = with types; str;
-                description = "Specifies what kind of package this is.";
+                description = "The Flatpak package identifier to use";
               };
             };
           };
@@ -57,8 +51,7 @@ in
 
           config = mkIf config.enable {
             name = if builtins.elem name validNames then name else (throw "Invalid build name: ${name}");
-            id = config.id;
-            type = config.type;
+            branch = config.branch;
           };
         })
       ]);

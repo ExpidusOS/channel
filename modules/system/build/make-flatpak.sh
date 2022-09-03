@@ -5,7 +5,6 @@ targets_=($targets)
 
 objects=($objects)
 symlinks=($symlinks)
-branch="$type/$id/$system"
 
 # Remove the initial slash from a path, since genisofs likes it that way.
 stripSlash() {
@@ -51,4 +50,4 @@ mkdir -p $out/ostree-repo
 rm env-vars
 
 time ostree init --mode archive-z2 --repo=$out/ostree-repo
-time ostree commit -b $branch --tree=dir=$(pwd)
+time ostree commit --repo=$out/ostree-repo -b $branch --tree=dir=$(pwd)
