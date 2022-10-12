@@ -36,6 +36,36 @@
         "type": "github"
       }
     },
+    "genesis-shell": {
+      "inputs": {
+        "expidus-sdk": [
+          "expidus-sdk"
+        ],
+        "libtokyo": [
+          "libtokyo"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "vadi": [
+          "vadi"
+        ]
+      },
+      "locked": {
+        "lastModified": 1665445642,
+        "narHash": "sha256-tmu7mXF4YHlWw2w3vZseqX+wP/+xOVec6XcDocdN38Y=",
+        "owner": "ExpidusOS",
+        "repo": "genesis",
+        "rev": "e7578dfc21c1fd461c5fa2a4f1096e44b5f68113",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ExpidusOS",
+        "ref": "refactor",
+        "repo": "genesis",
+        "type": "github"
+      }
+    },
     "gxml": {
       "inputs": {
         "nixpkgs": [
@@ -87,7 +117,9 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "vadi": "vadi"
+        "vadi": [
+          "vadi"
+        ]
       },
       "locked": {
         "lastModified": 1665445044,
@@ -143,11 +175,13 @@
       "inputs": {
         "expidus-sdk": "expidus-sdk",
         "flake-utils": "flake-utils",
+        "genesis-shell": "genesis-shell",
         "home-manager": "home-manager",
         "libdevident": "libdevident",
         "libtokyo": "libtokyo",
         "nixpkgs": "nixpkgs",
-        "terminal": "terminal"
+        "terminal": "terminal",
+        "vadi": "vadi"
       }
     },
     "terminal": {
@@ -179,7 +213,6 @@
     "vadi": {
       "inputs": {
         "nixpkgs": [
-          "libdevident",
           "nixpkgs"
         ]
       },
