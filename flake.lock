@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "expidus-sdk": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1665176069,
+        "narHash": "sha256-GVl55tQsrRGJwJyzrJwmnyMTm04ljRMyswZATHrt7bQ=",
+        "owner": "ExpidusOS",
+        "repo": "sdk",
+        "rev": "9823700638419dd4e1fe32a4d0c9d71024af37a5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ExpidusOS",
+        "repo": "sdk",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "locked": {
         "lastModified": 1652776076,
@@ -14,6 +34,27 @@
         "repo": "flake-utils",
         "rev": "04c1b180862888302ddfb2e3ad9eaa63afc60cf8",
         "type": "github"
+      }
+    },
+    "gxml": {
+      "inputs": {
+        "nixpkgs": [
+          "libdevident",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1665179503,
+        "narHash": "sha256-1SFKyeiCFaBbg+w2UyRIx02fYhIJmXsH8C/EPvhUBQA=",
+        "ref": "refs/heads/master",
+        "rev": "18abf5135a33b339f85ff1cfccb95ed860fe0c8d",
+        "revCount": 2111,
+        "type": "git",
+        "url": "https://gitlab.gnome.org/RossComputerGuy/gxml.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://gitlab.gnome.org/RossComputerGuy/gxml.git"
       }
     },
     "home-manager": {
@@ -34,6 +75,31 @@
         "owner": "nix-community",
         "repo": "home-manager",
         "rev": "4a3d01fb53f52ac83194081272795aa4612c2381",
+        "type": "github"
+      }
+    },
+    "libdevident": {
+      "inputs": {
+        "expidus-sdk": [
+          "expidus-sdk"
+        ],
+        "gxml": "gxml",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "vadi": "vadi"
+      },
+      "locked": {
+        "lastModified": 1665445044,
+        "narHash": "sha256-4GU8rsrgKVPfCF0RI1icvQ1KntdTnCJ9ApUXjGBLZHk=",
+        "owner": "ExpidusOS",
+        "repo": "libdevident",
+        "rev": "e05c59a23894fa3bea3e5fc1c7c729e1700bc2ca",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ExpidusOS",
+        "repo": "libdevident",
         "type": "github"
       }
     },
@@ -75,10 +141,61 @@
     },
     "root": {
       "inputs": {
+        "expidus-sdk": "expidus-sdk",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
+        "libdevident": "libdevident",
         "libtokyo": "libtokyo",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "terminal": "terminal"
+      }
+    },
+    "terminal": {
+      "inputs": {
+        "expidus-sdk": [
+          "expidus-sdk"
+        ],
+        "libtokyo": [
+          "libtokyo"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1665446181,
+        "narHash": "sha256-4hSJUj6VGBLGMKLIoKk5ZCJBmc0IlOA3j+0F6uP7qfU=",
+        "owner": "ExpidusOS",
+        "repo": "terminal",
+        "rev": "891079a4634b824333bedb3daca6442535d88161",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ExpidusOS",
+        "repo": "terminal",
+        "type": "github"
+      }
+    },
+    "vadi": {
+      "inputs": {
+        "nixpkgs": [
+          "libdevident",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1663630541,
+        "narHash": "sha256-yHEZ9DjhYmw7UV8AsvFsUHdGDa8ivu5hWNFo6Xp7fGI=",
+        "owner": "ExpidusOS",
+        "repo": "Vadi",
+        "rev": "4864ab757b0355498e6f888b6499d3ec86d1c368",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ExpidusOS",
+        "ref": "feat/nix",
+        "repo": "Vadi",
+        "type": "github"
       }
     }
   },

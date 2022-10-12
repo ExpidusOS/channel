@@ -9,12 +9,31 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  inputs.libtokyo = {
-    url = github:ExpidusOS/libtokyo;
+  inputs.expidus-sdk = {
+    url = github:ExpidusOS/sdk;
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, home-manager, nixpkgs, libtokyo, ... }@inputs:
+  inputs.libdevident = {
+    url = github:ExpidusOS/libdevident;
+    inputs.expidus-sdk.follows = "expidus-sdk";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  inputs.libtokyo = {
+    url = github:ExpidusOS/libtokyo;
+    inputs.expidus-sdk.follows = "expidus-sdk";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  inputs.terminal = {
+    url = github:ExpidusOS/terminal;
+    inputs.expidus-sdk.follows = "expidus-sdk";
+    inputs.libtokyo.follows = "libtokyo";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  outputs = { self, home-manager, nixpkgs, expidus-sdk, libdevident, libtokyo, terminal, ... }@inputs:
     let
       supportedSystems = builtins.filter (name: builtins.head (builtins.tail (builtins.tail (builtins.split "-" name))) == "linux") (builtins.attrNames libtokyo.packages);
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -25,9 +44,14 @@
           pkgs = nixpkgsFor.${system};
         in
         {
+          expidus-sdk = inputs.expidus-sdk.packages.${system}.default;
+          libdevident = inputs.libdevident.packages.${system}.default;
+
           libtokyo = inputs.libtokyo.packages.${system}.default;
           libtokyo-gtk3 = inputs.libtokyo.packages.${system}.gtk3;
           libtokyo-gtk4 = inputs.libtokyo.packages.${system}.gtk4;
+
+          expidus-terminal = inputs.terminal.packages.${system}.default;
         });
 
       lib = {
